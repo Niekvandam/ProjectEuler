@@ -43,7 +43,9 @@ def problem17():
     print(len(result))
 
 
+## TODO Fix some recursive exception
 def problem18():
+    global high
     triangle = open('problem18')
     contents = triangle.readlines()
     triangle = []
@@ -51,7 +53,24 @@ def problem18():
         array = i.split()
         result = map(int, array)
         triangle.append(list(result))
-    for i in triangle:
-        print(list(i))
+    triangle = triangle[::-1]
+    def getHighestValues(newtriangle):
+        global high
+        for idx, row in enumerate(newtriangle[1:]):
+            temp = []
+            for idy, number in enumerate(row):
+                value1 = number + triangle[idx][idy]
+                value2 = number + triangle[idx][idy+1]
+                temp.append(max(value1, value2))
+            del triangle[idx]
+            del triangle[idx]
+            triangle.insert(0, temp)
+            if len(triangle) == 1:
+                high = triangle[0][0]
+            getHighestValues(triangle)
+    try:
+        getHighestValues(triangle)
+    # TODO fix indexerror, if thrown the algorithm is done
+    except IndexError:
+        return high
 
-    for
