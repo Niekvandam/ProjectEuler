@@ -1,3 +1,5 @@
+import string
+
 from calculations import custom_pow
 
 
@@ -14,7 +16,8 @@ def problem16():
 def problem17():
     insertion = 'and'
     base = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-    misc = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen']
+    misc = ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen',
+            'nineteen']
     decimals = ['twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety']
     hundred = 'hundred'
     thousand = 'thousand'
@@ -46,7 +49,7 @@ def problem17():
 ## TODO Fix some recursive exception
 def problem18():
     global high
-    triangle = open('problem18')
+    triangle = open('resources/problem67.txt')
     contents = triangle.readlines()
     triangle = []
     for i in contents:
@@ -54,13 +57,14 @@ def problem18():
         result = map(int, array)
         triangle.append(list(result))
     triangle = triangle[::-1]
+
     def getHighestValues(newtriangle):
         global high
         for idx, row in enumerate(newtriangle[1:]):
             temp = []
             for idy, number in enumerate(row):
                 value1 = number + triangle[idx][idy]
-                value2 = number + triangle[idx][idy+1]
+                value2 = number + triangle[idx][idy + 1]
                 temp.append(max(value1, value2))
             del triangle[idx]
             del triangle[idx]
@@ -68,9 +72,63 @@ def problem18():
             if len(triangle) == 1:
                 high = triangle[0][0]
             getHighestValues(triangle)
+
     try:
         getHighestValues(triangle)
     # TODO fix indexerror, if thrown the algorithm is done
     except IndexError:
         return high
 
+
+def problem20(target):
+    temp = 1
+    result = 0
+    for i in range(target, 0, -1):
+        temp *= i
+    for i in str(temp):
+        result += int(i)
+    return result
+
+
+def problem21(taregetnum):
+    temp = 0
+    amicables = []
+    dict = {}  # {SUM, NUMBER}
+    currentnums = []
+    for i in range(1, taregetnum, 1):
+        for j in range(1, i, 1):
+            if i % j == 0:
+                currentnums.append(j)
+        for k in currentnums:
+            temp += k
+        if temp in dict and dict[temp] == i:
+            amicables.append(i)
+            amicables.append(temp)
+        dict[i] = temp
+        currentnums.clear()
+        temp = 0
+    result = 0
+    for i in amicables:
+        print(i)
+        result += i
+    return result
+
+
+def problem22():
+    valueofnames = 0
+    value = 0
+    alphabet = dict(zip(string.ascii_lowercase, range(1,27)))
+    names = open("resources/problem22.txt",  "r")
+    lines = names.readline()
+    refactor = lines.replace('"', '').split(",")
+    refactor.sort()
+    for name in refactor:
+        for char in name:
+            value += alphabet[char.lower()]
+        valueofnames += (1 + refactor.index(name)) * value
+        value = 0
+    return valueofnames
+
+
+def problem23():
+    
