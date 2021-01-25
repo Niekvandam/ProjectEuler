@@ -1,4 +1,5 @@
 import string
+import time
 
 from calculations import custom_pow
 
@@ -117,8 +118,8 @@ def problem21(taregetnum):
 def problem22():
     valueofnames = 0
     value = 0
-    alphabet = dict(zip(string.ascii_lowercase, range(1,27)))
-    names = open("resources/problem22.txt",  "r")
+    alphabet = dict(zip(string.ascii_lowercase, range(1, 27)))
+    names = open("resources/problem22.txt", "r")
     lines = names.readline()
     refactor = lines.replace('"', '').split(",")
     refactor.sort()
@@ -131,4 +132,42 @@ def problem22():
 
 
 def problem23():
-    
+    nums = list(range(1, 28123))
+    abundants = []
+    sums = []
+    result = 0
+    # Abundant num = sum of proper divisors > n
+    for i in range(28123):
+        if i not in abundants:
+            divisors = []
+            for j in range(1, i - 1):
+                # Check for perfect divisor
+                if i % j == 0:
+                    divisors.append(j)
+            temp = 0
+            # Look for the sum of all divisors
+            for divisor in divisors:
+                temp += divisor
+            divisors.clear()
+            # proper divisors > n
+            if temp > i:
+                # Abundant!
+                abundants.append(i)
+                # Find all new abundant numbers that are multiples
+                for newab in range(i, 28123, i):
+                    if newab not in abundants:
+                        # Add newfound abundant number
+                        abundants.append(newab)
+
+    # Loop through all abundant nums
+    for x in abundants:
+        print(f"looping @ {x}")
+        for y in abundants:
+            # Remove any new combination of abundant numbers
+            if x+y in nums:
+                nums.remove(x+y)
+        abundants.remove(x)
+    # Numbers that are NOT the sum of an abundant number
+    for num in nums:
+        result += num
+    return result

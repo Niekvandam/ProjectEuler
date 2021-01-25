@@ -1,4 +1,4 @@
 from calculations import custom_pow
-from problems import problem22
+import problems
 
-print(problem22())
+print(problems.problem23())
